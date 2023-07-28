@@ -12,18 +12,25 @@ This is The Final Project for Hacktiv8 by Making The Mobile App using React Nati
 | Eki Alfani    | RCTN-KS07-010 |
 | Ardi Saputra  | RCTN-KS07-012 |
 
-## 👨 Login Admin & User
+## 👨 Login User
 
 | Account | Username        | Password |
 | ------- | --------------- | -------- |
 | User    | johnd@gmail.com | johnd123 |
+
+## 🖥️ Preview
+You can use the example account above to login the App, or Click Play to Preview here:
+
+https://github.com/FinalProject03-Kel04-Hacktiv8/Kel04-FP03-Hacktiv8-Hotel-Reservation-MobileApp/assets/60167960/1840c0f5-3f2a-49b2-b8da-75308f410ebe
+
+
 
 ## 🛠️ Tech Stack & Tools
 
 - React Native
 - Expo Cli
 - Redux Toolkit
-- NativeWind CSS
+- NativeWind Stylesheet
 - JavaScript
 - React Native Vector Icon
 - API from https://booking.com/

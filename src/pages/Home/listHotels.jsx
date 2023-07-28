@@ -20,6 +20,7 @@ export default function ListHotels() {
   const dispatch = useDispatch();
   const dataSearch = useSelector((state) => state.search);
   const { data, loading } = useSelector((state) => state.list);
+
   const navigation = useNavigation();
   const route = useRoute();
   const { searchQuery, id } = route.params;
@@ -59,8 +60,6 @@ export default function ListHotels() {
               )
             )
           );
-          // console.log("DataList fetched!");
-          // console.log(data);
         } else if (dataSearch.data.length == 0) {
           dispatch(fetchDataLocation(searchLocations(id)));
         }

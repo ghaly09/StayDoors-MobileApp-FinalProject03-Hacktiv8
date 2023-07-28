@@ -1,12 +1,12 @@
 import { useNavigation } from "@react-navigation/core";
-import React from "react";
+import React, { useState } from "react";
 import { Image, Text, View } from "react-native";
 import { Card, Title } from "react-native-paper";
 import AntDesign from "react-native-vector-icons/AntDesign";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Entypo from "react-native-vector-icons/Entypo";
-import { addItem } from "../../redux/slices/slice-favorite";
-import { useDispatch } from "react-redux";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import { useDispatch, useSelector } from "react-redux";
+import { addItem, removeItem } from "../../redux/slices/slice-favorite";
 
 export default function CardHotels({
   name,
@@ -17,6 +17,7 @@ export default function CardHotels({
   rates,
   reviews,
   Guest,
+  Saved,
 }) {
   let hotelPhoto =
     imgHotel ??
@@ -25,22 +26,38 @@ export default function CardHotels({
   const urlImg = hotelPhoto.substring(getImgQuery + 1);
   const dispatch = useDispatch();
   const navigation = useNavigation();
+  const params = {
+    nameHotel: name,
+    city,
+    imgHotel: `https://cf.bstatic.com/xdata/images/hotel/max1024x768/${urlImg}`,
+    price,
+    currency,
+    rates,
+    reviews,
+    Guest,
+  };
+
+  const savedID = useSelector((state) => state.favorite.items);
+  const [save, setSave] = useState("favorite-border");
+
+  const existingItem = savedID.find((item) => item.nameHotel === name);
 
   const handleToDetail = () => {
     navigation.navigate("Detail", {
-      nameHotel: name,
-      city,
-      imgHotel: `https://cf.bstatic.com/xdata/images/hotel/max1024x768/${urlImg}`,
-      price,
-      currency,
-      rates,
-      reviews,
-      Guest,
+      ...params,
     });
   };
 
   const handleFavorite = () => {
-    dispatch(addItem());
+    if (save == "favorite-border" && !existingItem) {
+      dispatch(addItem({ ...params, Saved: "favorite" }));
+      setSave("favorite");
+      console.log("Saved");
+    } else if (Saved === "favorite" || existingItem?.save) {
+      setSave("favorite-border");
+      dispatch(removeItem(name));
+      console.log("Delete Saved");
+    }
   };
 
   return (
@@ -59,13 +76,13 @@ export default function CardHotels({
           />
 
           <Text
-            className="absolute top-4 right-5 text-red-500 font-bold bg-slate-200 rounded-full pr-1 pt-1"
+            className={`absolute top-4 right-5 text-red-500 font-bold bg-slate-200 rounded-full pr-1 pt-1`}
             onPress={handleFavorite}
           >
             {" "}
             <MaterialIcons
               className="absolute top-1 right-0"
-              name="favorite-border"
+              name={`${existingItem ? existingItem?.Saved : save}`}
               size={26}
             />
           </Text>

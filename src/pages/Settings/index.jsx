@@ -1,8 +1,14 @@
-import { View, Text, TextInput, TouchableOpacity, ScrollView} from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { userLogout } from "../../redux/slices/auth-slice";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import { Appbar, List, Portal } from "react-native-paper";
 import { useState } from "react";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
@@ -19,34 +25,37 @@ export default function Settings() {
   const user = useSelector((state) => state.user);
 
   const handleInputChange = (text, name) => {
-    dispatch(profileUpdate({text, name}));
+    dispatch(profileUpdate({ text, name }));
     console.log(text, name);
     setExpanded(false);
-  }
+  };
 
   const handlePress = () => setExpanded(!expanded);
 
   const handleShowPopupConfirmation = (state) => {
     setVisible(state);
-  }
+  };
 
   const handleUserLogout = () => {
     dispatch(userLogout());
-    navigation.navigate("Home");
+    navigation.navigate("Login");
     setVisible(false);
-  }
+  };
 
   return (
     <ScrollView>
       <Appbar.Header>
-        <Appbar.Action icon="keyboard-backspace" onPress={() => navigation.navigate("Home")} />
+        <Appbar.Action
+          icon="keyboard-backspace"
+          onPress={() => navigation.navigate("Home")}
+        />
         <Appbar.Content
           title={
             <Text className="text-lg">
-            <MaterialCommunityIcons name="cards-outline" size={26} />
-            Settings {" "}
-            <Text className="text-purple-700 font-semibold">Profile</Text>
-          </Text>
+              <MaterialCommunityIcons name="cards-outline" size={26} />
+              Settings{" "}
+              <Text className="text-purple-700 font-semibold">Profile</Text>
+            </Text>
           }
           mode="center-aligned"
           style={{ alignItems: "center" }}
@@ -55,12 +64,8 @@ export default function Settings() {
       </Appbar.Header>
       <View className="p-5">
         <View className="bg-white p-5 rounded-lg">
-          <Text 
-            className="text-lg font-medium">
-              My Account
-          </Text>
-          <View 
-            className="flex-row items-center justify-between border-b border-slate-200 py-3">
+          <Text className="text-lg font-medium">My Account</Text>
+          <View className="flex-row items-center justify-between border-b border-slate-200 py-3">
             <Text className="text-base">First Name</Text>
             <TextInput
               className="w-1/2 text-right focus:border-2 focus:border-[#9450e7] py-1 rounded-md focus:pr-3 text-base"
@@ -68,8 +73,7 @@ export default function Settings() {
               onChangeText={(text) => handleInputChange(text, "firstName")}
             />
           </View>
-          <View 
-            className="flex-row items-center justify-between border-b border-slate-200 py-3">
+          <View className="flex-row items-center justify-between border-b border-slate-200 py-3">
             <Text className="text-base">Last Name</Text>
             <TextInput
               className="w-1/2 text-right focus:border-2 focus:border-[#9450e7] py-1 rounded-md focus:pr-3 text-base"
@@ -77,8 +81,7 @@ export default function Settings() {
               onChangeText={(text) => handleInputChange(text, "lastName")}
             />
           </View>
-          <View 
-            className="flex-row items-center justify-between border-b border-slate-200 py-3">
+          <View className="flex-row items-center justify-between border-b border-slate-200 py-3">
             <Text className="text-base">Email</Text>
             <TextInput
               className="w-1/2 text-right focus:border-2 focus:border-[#9450e7] py-1 rounded-md focus:pr-3 text-base"
@@ -86,8 +89,7 @@ export default function Settings() {
               onChangeText={(text) => handleInputChange(text, "email")}
             />
           </View>
-          <View 
-            className="flex-row items-center justify-between border-b border-slate-200 py-3">
+          <View className="flex-row items-center justify-between border-b border-slate-200 py-3">
             <Text className="text-base">Phone</Text>
             <TextInput
               className="w-1/2 text-right focus:border-2 focus:border-[#9450e7] py-1 rounded-md focus:pr-3 text-base"
@@ -97,21 +99,26 @@ export default function Settings() {
             />
           </View>
           <List.Section className="w-full border-b border-slate-200 flex-row justify-between items-start">
-            <List.Subheader className="px-0 text-black text-base">Gender</List.Subheader>
+            <List.Subheader className="px-0 text-black text-base">
+              Gender
+            </List.Subheader>
             <List.Accordion
               className="p-0 w-[105px]"
-              titleStyle={{fontSize: 16}}
+              titleStyle={{ fontSize: 16 }}
               title={user.gender}
               expanded={expanded}
-              onPress={handlePress}>
+              onPress={handlePress}
+            >
               <List.Item
-              titleStyle={{fontSize: 16}} 
-                title="Male" 
-                onPress={() => handleInputChange("Male", "gender")} />
+                titleStyle={{ fontSize: 16 }}
+                title="Male"
+                onPress={() => handleInputChange("Male", "gender")}
+              />
               <List.Item
-                titleStyle={{fontSize: 16}}
-                title="Female" 
-                onPress={() => handleInputChange("Female", "gender")} />
+                titleStyle={{ fontSize: 16 }}
+                title="Female"
+                onPress={() => handleInputChange("Female", "gender")}
+              />
             </List.Accordion>
           </List.Section>
         </View>
@@ -120,19 +127,21 @@ export default function Settings() {
           <Text className="py-5 border-b border-slate-200 text-base">
             Terms of Service
           </Text>
-          <TouchableOpacity 
+          <TouchableOpacity
             className="mt-5"
-            onPress={() => handleShowPopupConfirmation(true)}>
+            onPress={() => handleShowPopupConfirmation(true)}
+          >
             <Text className="text-red-600 font-medium active:text-red-500 text-base">
               Logout
             </Text>
           </TouchableOpacity>
         </View>
         <Portal>
-          <LogoutPopup 
+          <LogoutPopup
             visible={visible}
             showPopup={handleShowPopupConfirmation}
-            handleUserLogout={handleUserLogout} />
+            handleUserLogout={handleUserLogout}
+          />
         </Portal>
       </View>
     </ScrollView>

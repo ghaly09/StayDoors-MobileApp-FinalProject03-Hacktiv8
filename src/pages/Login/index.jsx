@@ -1,5 +1,13 @@
 import { SafeAreaView } from "react-native-safe-area-context";
-import { View, Text, TouchableHighlight, TextInput, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  TouchableHighlight,
+  TextInput,
+  ActivityIndicator,
+  ScrollView,
+  Image,
+} from "react-native";
 import { useState, useEffect } from "react";
 import { userLogin, userAuthenticated } from "../../redux/slices/auth-slice";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,7 +21,7 @@ export default function Login({ route }) {
   const navigation = useNavigation();
 
   const prevRoute = route?.params?.prevRoute || "Home";
-  
+
   const auth = useSelector((state) => state.auth);
   const user = useSelector((state) => state.user);
 
@@ -24,114 +32,121 @@ export default function Login({ route }) {
   useEffect(() => {
     if (auth.token) {
       if (prevRoute === "Detail") {
-        navigation.navigate("Booking", {...route.params});
+        navigation.navigate("Booking", { ...route.params });
       } else {
         navigation.navigate(prevRoute);
       }
-  
+
       dispatch(userAuthenticated(true));
     }
-
   }, [auth.token]);
 
   const handleUserLogin = () => {
-    dispatch(userLogin({email, password, user}));
-  }
+    dispatch(userLogin({ email, password, user }));
+  };
 
   const handleSecureTextEntry = () => {
     setSecureTextEntry(!secureTextEntry);
-  }
+  };
 
   return (
-    <View>
-      <Appbar.Header>
-        <Appbar.Action icon="keyboard-backspace" onPress={() => navigation.navigate("Home")} />
-        <Appbar.Content
-          title={
-            <Text className="text-lg">
-            <MaterialCommunityIcons name="cards-outline" size={26} />
-            Sign {" "}
-            <Text className="text-purple-700 font-semibold">In</Text>
-          </Text>
-          }
-          mode="center-aligned"
-          style={{ alignItems: "center" }}
-        />
-        <Appbar.Action icon="dots-vertical" />
-      </Appbar.Header>
-      <View className="px-5 py-16">
-        <Text 
-          className="text-3xl text-[#9450e7] font-semibold">
-          Hello,
-        </Text>
-        <Text 
-          className="text-3xl font-semibold">
-          Welcome Back!
-        </Text>
-
-        <Text className="text-slate-500 text-base mb-12 mt-2">
-          Enter your credentials to continue.
-        </Text>
-
-        <View className="mb-6">
-          <Text className="mb-2 font-medium text-base">
-            Email
-          </Text>
-          <TextInput
-          className="bg-slate-200 border border-slate-300 px-3 py-2 rounded-md focus:bg-transparent focus:border-2 focus:border-[#9450e7] text-slate-700 text-base"
-          placeholder="Input your email"
-          defaultValue={email}
-          onChangeText={setEmail}
-        />
-        </View>
-
-        <View className="mb-6">
-          <Text className="mb-2 font-medium text-base">
-            Password
-          </Text>
-          <View className="relative">
-            <TextInput
-              className="bg-slate-200 border border-slate-300 pl-3 pr-10 py-2 rounded-md focus:bg-transparent focus:border-2 focus:border-[#9450e7] text-slate-700 text-base"
-              placeholder="Input your password"
-              defaultValue={password}
-              onChangeText={setPassword}
-              secureTextEntry={secureTextEntry}
+    <View className="bg-white">
+      <ScrollView>
+        <View className="px-5 pb-16 pt-3">
+          <View className="flex items-center">
+            <Image
+              source={require("../../../assets/journey.png")}
+              style={{ width: 300, height: 300 }}
+              resizeMode="contain"
             />
-            {password !== "" &&
-              <FontAwesome
-                className="absolute top-3 right-3 text-slate-600"
-                onPress={handleSecureTextEntry}
-                name={secureTextEntry ? "eye-slash" : "eye"}
-                size={20}
-              />
-            }
           </View>
-        </View>
-        {(!email.length || !password.length) ?
-          <TouchableHighlight 
-            className="p-3 bg-slate-400 rounded-md"
-            disabled>
-            <Text className="text-center text-center text-white font-medium text-base">Sign In</Text>
-          </TouchableHighlight> :
-          <TouchableHighlight
-            className="p-3 bg-[#9450e7] rounded-md"
-            onPress={handleUserLogin}
-          >
-            {auth.loading ?
-              <View className="flex-row justify-center gap-x-3">
-                <ActivityIndicator size="small"  color="#fff" />
-                <Text className="text-white text-base font-medium">Processing...</Text>
-              </View> :
-              <Text 
-                className="text-center text-white font-medium text-base">
+          <Text className="text-3xl font-semibold text-slate-700">
+            <MaterialCommunityIcons name="cards-outline" size={36} />
+            Stay
+            <Text className="text-3xl text-[#9450e7] font-bold">Doors</Text>
+          </Text>
+
+          <Text className="text-slate-500 text-sm mb-8 mt-2">
+            Let's continue to discover wonderful destinations and create lasting
+            memories.
+          </Text>
+
+          <View className="mb-4">
+            <Text className="mb-2 font-medium text-base">Username/Email</Text>
+            <TextInput
+              className="bg-slate-200 border border-slate-300 px-3 py-2 rounded-md focus:bg-transparent focus:border-2 focus:border-[#9450e7] text-slate-700 text-base"
+              placeholder="email or username"
+              defaultValue={email}
+              onChangeText={setEmail}
+            />
+          </View>
+
+          <View className="mb-6">
+            <Text className="mb-2 font-medium text-base">Password</Text>
+            <View className="relative">
+              <TextInput
+                className="bg-slate-200 border border-slate-300 pl-3 pr-10 py-2 rounded-md focus:bg-transparent focus:border-2 focus:border-[#9450e7] text-slate-700 text-base"
+                placeholder="Input your password"
+                defaultValue={password}
+                onChangeText={setPassword}
+                secureTextEntry={secureTextEntry}
+              />
+              {password !== "" && (
+                <FontAwesome
+                  className="absolute top-3 right-3 text-slate-600"
+                  onPress={handleSecureTextEntry}
+                  name={secureTextEntry ? "eye-slash" : "eye"}
+                  size={20}
+                />
+              )}
+            </View>
+          </View>
+          {!email.length || !password.length ? (
+            <TouchableHighlight
+              className="p-3 bg-slate-400 rounded-md"
+              disabled
+            >
+              <Text className="text-center text-white font-medium text-base">
                 Sign In
               </Text>
-            }
-          </TouchableHighlight>
-        }
-        
-        {auth.error && <Text className="text-red-500 mt-3">{auth.error}</Text>}
-      </View>
+            </TouchableHighlight>
+          ) : (
+            <TouchableHighlight
+              className="p-3 bg-[#9450e7] rounded-md"
+              onPress={handleUserLogin}
+            >
+              {auth.loading ? (
+                <View className="flex-row justify-center gap-x-3">
+                  <ActivityIndicator size="small" color="#fff" />
+                  <Text className="text-white text-base font-medium">
+                    Processing...
+                  </Text>
+                </View>
+              ) : (
+                <Text className="text-center text-white font-medium text-base">
+                  Sign In
+                </Text>
+              )}
+            </TouchableHighlight>
+          )}
+
+          {auth.error && (
+            <Text className="text-red-500 mt-3">{auth.error}</Text>
+          )}
+
+          <Text className="text-slate-500 text-sm mb-5 mt-5">
+            By logging in, you have agreed to the{" "}
+            <Text className="text-[#9450e7] text-sm mb-8 mt-2">
+              Terms and Conditions
+            </Text>{" "}
+            and{" "}
+            <Text className="text-[#9450e7] text-sm mb-8 mt-2">
+              Privacy Policy
+            </Text>{" "}
+            of StayDoors.
+          </Text>
+        </View>
+      </ScrollView>
     </View>
   );
 }

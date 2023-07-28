@@ -11,7 +11,7 @@ import Settings from "../../pages/Settings";
 const Tab = createMaterialBottomTabNavigator();
 
 export default function Navbar() {
-  const auth = useSelector((state) => state.auth);
+  // const auth = useSelector((state) => state.auth);
 
   return (
     <Tab.Navigator>
@@ -31,7 +31,24 @@ export default function Navbar() {
           tabBarIcon: () => <MaterialIcons name="favorite-border" size={26} />,
         }}
       />
-      {auth.isAuthenticated ? (
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          tabBarLabel: "Profile",
+          tabBarIcon: () => <AntDesign name="user" size={26} />,
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={Settings}
+        options={{
+          tabBarLabel: "Settings",
+          tabBarIcon: () => <AntDesign name="setting" size={26} />,
+        }}
+      />
+
+      {/* {auth.isAuthenticated ? (
         <>
           <Tab.Screen
             name="Profile"
@@ -59,7 +76,7 @@ export default function Navbar() {
             tabBarIcon: () => <MaterialIcons name="login" size={26} />,
           }}
         />
-      )}
+      )} */}
     </Tab.Navigator>
   );
 }

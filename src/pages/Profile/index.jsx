@@ -83,9 +83,16 @@ export default function Profile() {
               />
             ))
           ) : (
-            <Text className="text-base text-center mt-5">
-              Your booking appear here.
-            </Text>
+            <View className="flex items-center">
+              <Image
+                source={require("../../../assets/not-found.png")}
+                style={{ width: 200, height: 200 }}
+                resizeMode="contain"
+              />
+              <Text className="text-slate-500 font-bold">
+                Oops! you haven't Booking yet!
+              </Text>
+            </View>
           )}
         </View>
       </View>
